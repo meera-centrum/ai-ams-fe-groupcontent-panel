@@ -1,0 +1,30 @@
+.group-card-root {
+  border: #e9e9ea solid 1px;
+  border-radius: 10px;
+}
+
+.group-card-header {
+  margin: 15px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.group-card-separator {
+  height: 1px;
+  background-color: #e9e9ea;
+}
+
+.group-card-content {
+  overflow-y: auto;
+  max-height: 300px;
+  margin: 15px;
+  font-size: 18px;
+}
+
+.group-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 10px;
+}

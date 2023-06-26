@@ -1,0 +1,5 @@
+.group-container-root {
+  margin: 5px;
+  overflow-y: auto;
+  height: calc(100% - 44px);
+}
