@@ -1,16 +1,13 @@
 import { Grid, GridSize } from '@mui/material';
 import React, { useMemo } from 'react';
 import { GroupLayout } from './group-layout';
-import { GroupItems } from './group-items';
 import { TextGroupCard } from './TextGroupCard';
 import { ChartGroupCard } from './ChartGroupCard';
-import { isTextGroup } from './text-group';
-import { isChartGroup } from './chart-group';
 import './group-container.css';
 
 interface GroupContainerProps {
   groupLayout: GroupLayout;
-  groupItems: GroupItems;
+  groupItems: any;
 }
 
 export const GroupContainer: React.FC<GroupContainerProps> = ({ groupLayout, groupItems }) => {
@@ -31,16 +28,11 @@ export const GroupContainer: React.FC<GroupContainerProps> = ({ groupLayout, gro
   return (
     <div className="group-container-root">
       <Grid container>
-        {groupItems.items.map((groupItem, index) => {
+        {groupItems.map((groupItem: any, index: any) => {
           return (
-            <Grid key={`${groupItem.title}-${index}`} item xs={gridSize} padding="10px">
-              {isTextGroup(groupItem) ? (
-                <TextGroupCard data={groupItem} />
-              ) : isChartGroup(groupItem) ? (
-                <ChartGroupCard data={groupItem} />
-              ) : (
-                <></>
-              )}
+            <Grid key={`${groupItem}-${index}`} item xs={gridSize} padding="10px">
+              <TextGroupCard data={groupItem} />
+              <ChartGroupCard data={groupItem} />
             </Grid>
           );
         })}
@@ -48,3 +40,14 @@ export const GroupContainer: React.FC<GroupContainerProps> = ({ groupLayout, gro
     </div>
   );
 };
+
+// import { ChartGroupCard } from './ChartGroupCard';
+// import { isTextGroup } from './text-group';
+// import { isChartGroup } from './chart-group';
+// isTextGroup(groupItem) ? (
+//   <TextGroupCard data={groupItem} />
+// ) : isChartGroup(groupItem) ? (
+//   <ChartGroupCard data={groupItem} />
+// ) : (
+//   <></>
+// )

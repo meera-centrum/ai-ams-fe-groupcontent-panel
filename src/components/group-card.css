@@ -1,6 +1,7 @@
 .group-card-root {
   border: #e9e9ea solid 1px;
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 .group-card-header {

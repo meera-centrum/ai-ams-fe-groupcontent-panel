@@ -1,11 +1,10 @@
 import React, { FC, useCallback, useState } from 'react';
-import { TextGroup } from './text-group';
 import { ContentAdjustment } from './content-adjustment';
 import { GroupCardActions } from './GroupCardActions';
 import './group-card.css';
 
 interface TextGroupCardProps {
-  data: TextGroup;
+  data: any;
 }
 
 export const TextGroupCard: FC<TextGroupCardProps> = ({ data }) => {
