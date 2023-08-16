@@ -6,7 +6,6 @@ import { useStyles2 } from '@grafana/ui';
 import { AdjustLayoutButton } from './AdjustLayoutButton';
 import { GroupContainer } from './GroupContainer';
 import { GroupLayout } from './group-layout';
-import { GroupItems } from './group-items';
 
 interface Props extends PanelProps<GroupContentOptions> {}
 
@@ -33,26 +32,14 @@ const getStyles = () => {
 };
 
 export const GroupContentPanel: React.FC<Props> = ({ options, data, width, height }) => {
+  /** Styles */
+  const styles = useStyles2(getStyles);
+  //
+  const rows = data.series.flatMap((d) => d.fields.flatMap((item) => item.values));
+  const groupItem = rows.map((item) => ({ title: 'Have no Title', text: item }));
+
   /* States */
   const [selectedGroupLayout, setSelectedGroupLayout] = useState<GroupLayout>(DEFAULT_GROUP_LAYOUT);
-  const [groupItems] = useState<GroupItems>({
-    items: [
-      {
-        title: 'Text A',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id neque aliquam vestibulum morbi blandit. Amet porttitor eget dolor morbi non arcu risus. Fringilla urna porttitor rhoncus dolor purus non enim praesent elementum. Tortor consequat id porta nibh venenatis cras sed. In arcu cursus euismod quis viverra nibh cras. Quam adipiscing vitae proin sagittis nisl rhoncus mattis. Amet commodo nulla facilisi nullam vehicula ipsum. Ut diam quam nulla porttitor massa id neque aliquam. Diam vulputate ut pharetra sit amet. Aliquam faucibus purus in massa tempor nec. Neque sodales ut etiam sit amet nisl purus in. Magna fermentum iaculis eu non diam phasellus. Dui sapien eget mi proin sed. Feugiat in ante metus dictum at tempor commodo ullamcorper. Vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant. Risus nec feugiat in fermentum posuere urna.',
-      },
-      {
-        title: 'Text B',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id neque aliquam vestibulum morbi blandit. Amet porttitor eget dolor morbi non arcu risus. Fringilla urna porttitor rhoncus dolor purus non enim praesent elementum. Tortor consequat id porta nibh venenatis cras sed. In arcu cursus euismod quis viverra nibh cras. Quam adipiscing vitae proin sagittis nisl rhoncus mattis. Amet commodo nulla facilisi nullam vehicula ipsum. Ut diam quam nulla porttitor massa id neque aliquam. Diam vulputate ut pharetra sit amet. Aliquam faucibus purus in massa tempor nec. Neque sodales ut etiam sit amet nisl purus in. Magna fermentum iaculis eu non diam phasellus. Dui sapien eget mi proin sed. Feugiat in ante metus dictum at tempor commodo ullamcorper. Vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant. Risus nec feugiat in fermentum posuere urna.',
-      },
-      { title: 'Chart C', chartData: '' },
-      {
-        title: 'Text D',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Id neque aliquam vestibulum morbi blandit. Amet porttitor eget dolor morbi non arcu risus. Fringilla urna porttitor rhoncus dolor purus non enim praesent elementum. Tortor consequat id porta nibh venenatis cras sed. In arcu cursus euismod quis viverra nibh cras. Quam adipiscing vitae proin sagittis nisl rhoncus mattis. Amet commodo nulla facilisi nullam vehicula ipsum. Ut diam quam nulla porttitor massa id neque aliquam. Diam vulputate ut pharetra sit amet. Aliquam faucibus purus in massa tempor nec. Neque sodales ut etiam sit amet nisl purus in. Magna fermentum iaculis eu non diam phasellus. Dui sapien eget mi proin sed. Feugiat in ante metus dictum at tempor commodo ullamcorper. Vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant. Risus nec feugiat in fermentum posuere urna.',
-      },
-      { title: 'Chart E', chartData: '' },
-    ],
-  });
 
   /* Callbacks */
   const handleSelectGroupLayout = useCallback(
@@ -61,9 +48,6 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
     },
     [setSelectedGroupLayout]
   );
-
-  // const theme = useTheme2();
-  const styles = useStyles2(getStyles);
 
   return (
     <div
@@ -86,7 +70,7 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
       >
         <AdjustLayoutButton groupLayout={selectedGroupLayout} onSelectGroupLayout={handleSelectGroupLayout} />
       </div>
-      <GroupContainer groupLayout={selectedGroupLayout} groupItems={groupItems} />
+      <GroupContainer groupLayout={selectedGroupLayout} groupItems={groupItem} />
     </div>
   );
 };

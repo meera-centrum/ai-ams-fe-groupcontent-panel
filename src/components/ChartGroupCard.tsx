@@ -1,14 +1,11 @@
 import React, { FC, useCallback, useState } from 'react';
-import { ChartGroup } from './chart-group';
 import { ContentAdjustment } from './content-adjustment';
-import { EChartsOption } from 'echarts';
-import ReactEcharts from 'echarts-for-react';
-import { mockChartData } from './mock-chart-data';
 import { GroupCardActions } from './GroupCardActions';
+import Plot from 'react-plotly.js';
 import './group-card.css';
 
 interface ChartGroupCardProps {
-  data: ChartGroup;
+  data: any;
 }
 
 export const ChartGroupCard: FC<ChartGroupCardProps> = ({ data }) => {
@@ -30,45 +27,35 @@ export const ChartGroupCard: FC<ChartGroupCardProps> = ({ data }) => {
     },
     [setContentAdjustment]
   );
-  //
-  const chartOptions: EChartsOption = {
-    title: {
-      text: '',
-    },
-    tooltip: {
-      trigger: 'axis',
-    },
-    xAxis: {
-      type: 'category',
-      name: 'Date',
-    },
-    yAxis: {
-      name: 'Production',
-    },
-    series: [
-      {
-        data: mockChartData,
-        type: 'line',
-        showSymbol: false,
-        encode: {
-          x: 'Date',
-          y: 'Production',
-          itemName: 'Date',
-          tooltip: ['Production'],
-        },
-      },
-    ],
-  };
 
   /* Renderer */
   return (
     <div className="group-card-root">
       <div className="group-card-header">
-        <span>{data.title}</span>
+        <span>Plot Chart</span>
       </div>
       <div className="group-card-separator" />
       <div className="group-card-content">
-        <ReactEcharts option={chartOptions} />
+        <Plot
+          data={[
+            {
+              type: 'bar',
+
+              x: [
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+                29,
+              ],
+              y: [
+                88, 20, 151, 151, 3, 212, 221, 234, 25, 5, 246, 205, 6, 33, 209, 12, 240, 33, 239, 108, 24, 7, 138, 119,
+                182, 76, 54, 0, 126,
+              ],
+            },
+          ]}
+          layout={{ showlegend: false }}
+          useResizeHandler={true}
+          style={{ width: '100%', height: '300px' }}
+          config={{ displayModeBar: false }}
+        />
       </div>
       <div className="group-card-footer">
         <GroupCardActions
