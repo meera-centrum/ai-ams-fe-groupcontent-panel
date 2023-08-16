@@ -2,7 +2,8 @@ import { Grid, GridSize } from '@mui/material';
 import React, { useMemo } from 'react';
 import { GroupLayout } from './group-layout';
 import { TextGroupCard } from './TextGroupCard';
-import { ChartGroupCard } from './ChartGroupCard';
+import { isMessageText } from '../utils/message-utils';
+import { ControlGroupCard } from './ControlGroupCard';
 import './group-container.css';
 
 interface GroupContainerProps {
@@ -30,9 +31,12 @@ export const GroupContainer: React.FC<GroupContainerProps> = ({ groupLayout, gro
       <Grid container>
         {groupItems.map((groupItem: any, index: any) => {
           return (
-            <Grid key={`${groupItem}-${index}`} item xs={gridSize} padding="10px">
-              <TextGroupCard data={groupItem} />
-              <ChartGroupCard data={groupItem} />
+            <Grid key={`groupItem-${index}`} item xs={gridSize} padding="10px">
+              {isMessageText(groupItem.text) ? (
+                <TextGroupCard data={groupItem} />
+              ) : (
+                <ControlGroupCard data={groupItem} />
+              )}
             </Grid>
           );
         })}
@@ -40,14 +44,3 @@ export const GroupContainer: React.FC<GroupContainerProps> = ({ groupLayout, gro
     </div>
   );
 };
-
-// import { ChartGroupCard } from './ChartGroupCard';
-// import { isTextGroup } from './text-group';
-// import { isChartGroup } from './chart-group';
-// isTextGroup(groupItem) ? (
-//   <TextGroupCard data={groupItem} />
-// ) : isChartGroup(groupItem) ? (
-//   <ChartGroupCard data={groupItem} />
-// ) : (
-//   <></>
-// )
