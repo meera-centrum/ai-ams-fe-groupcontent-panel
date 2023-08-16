@@ -1,13 +1,17 @@
 import React, { FC, useCallback, useState } from 'react';
 import { ContentAdjustment } from './content-adjustment';
 import { GroupCardActions } from './GroupCardActions';
+import Markdown from 'markdown-to-jsx';
+import Plot from './Plot';
+import TableList from './TableList';
+import Error from './Error';
 import './group-card.css';
 
-interface TextGroupCardProps {
+interface ControlGroupCardProps {
   data: any;
 }
 
-export const TextGroupCard: FC<TextGroupCardProps> = ({ data }) => {
+export const ControlGroupCard: FC<ControlGroupCardProps> = ({ data }) => {
   /* States */
   const [isKeepItOn, setKeepItOn] = useState<boolean>(false);
   const [contentAdjustment, setContentAdjustment] = useState<ContentAdjustment>(ContentAdjustment.Shorten);
@@ -26,16 +30,33 @@ export const TextGroupCard: FC<TextGroupCardProps> = ({ data }) => {
     },
     [setContentAdjustment]
   );
+  //
 
   /* Renderer */
   return (
     <div className="group-card-root">
       <div className="group-card-header">
-        <span>Text Group Card</span>
+        <span>Control Group Card</span>
       </div>
       <div className="group-card-separator" />
       <div className="group-card-content">
-        <span>{data.text}</span>
+        <Markdown
+          options={{
+            overrides: {
+              PlotlyPlot: {
+                component: Plot,
+              },
+              Error: {
+                component: Error,
+              },
+              TableList: {
+                component: TableList,
+              },
+            },
+          }}
+        >
+          {data.text}
+        </Markdown>
       </div>
       <div className="group-card-footer">
         <GroupCardActions
