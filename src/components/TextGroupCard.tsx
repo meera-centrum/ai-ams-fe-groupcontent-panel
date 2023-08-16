@@ -31,7 +31,7 @@ export const TextGroupCard: FC<TextGroupCardProps> = ({ data }) => {
   return (
     <div className="group-card-root">
       <div className="group-card-header">
-        <span>{data.title}</span>
+        <span>Text Group Card</span>
       </div>
       <div className="group-card-separator" />
       <div className="group-card-content">

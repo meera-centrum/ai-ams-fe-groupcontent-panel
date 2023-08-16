@@ -1,12 +1,11 @@
 import React, { FC, useCallback, useState } from 'react';
-import { ChartGroup } from './chart-group';
 import { ContentAdjustment } from './content-adjustment';
 import { GroupCardActions } from './GroupCardActions';
 import Plot from 'react-plotly.js';
 import './group-card.css';
 
 interface ChartGroupCardProps {
-  data: ChartGroup;
+  data: any;
 }
 
 export const ChartGroupCard: FC<ChartGroupCardProps> = ({ data }) => {
