@@ -1,3 +1,25 @@
+# Group Content Grafana Panel
+
+## How to make a release
+
+On main branch:
+Automatic Release:
+
+1. `yarn version --new-version ***` for example: `yarn version --new-version 2.3.15`
+2. `git push` and wait until the CI workflow has been finished.
+3. Make a draft release with this new version on GitHub.
+4. `git tag origin ***` for example: `git tag origin v2.3.15` and wait until the Release workflow has been finished.
+
+- If automatic Release workflow failed you had to make a release version manually.
+
+Manual Release (Replacement for 4th step):
+
+1. You must to make sure `dist` folder is up to date. So run `yarn build`.
+2. Move dist content to new folder named like repo project: `mv dist ai-ams-fe-groupcontent-panel`
+3. Zip this new folder with a template name: `zip ai-ams-fe-groupcontent-panel-***.zip ai-ams-fe-groupcontent-panel -r` for example: `zip ai-ams-fe-groupcontent-panel-2.3.15.zip ai-ams-fe-groupcontent-panel -r`
+4. Make a checksum file for this zip: `md5sum ai-ams-fe-groupcontent-panel-***.zip > ai-ams-fe-groupcontent-panel-***.zip.md5` for example: `md5sum ai-ams-fe-groupcontent-panel-2.3.15.zip > ai-ams-fe-groupcontent-panel-2.3.15.zip.md5`
+5. Now we should upload these two files into the new release on github.
+
 # Grafana panel plugin template
 
 This template is a starting point for building a panel plugin for Grafana.
