@@ -1,0 +1,12 @@
+.table-list--table-container {
+  width: 70%;
+  border: 1px solid #69696959 !important;
+  margin: 0 auto;
+}
+
+.table-list--table-header,
+.table-list--table-row {
+  border-bottom: 1px solid #69696959;
+  border-right: 1px solid #69696959;
+  padding: 10px;
+}

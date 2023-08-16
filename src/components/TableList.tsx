@@ -1,6 +1,6 @@
 import React from 'react';
 import { take } from 'lodash';
-
+import './table-list.css';
 interface TableListProps {
   data: string;
 }
@@ -24,18 +24,15 @@ const TableList = ({ data }: TableListProps) => {
 
   /** Renderer */
   return (
-    <div>
+    <div className="table-list--main-container">
       {dataJson.length === 0 ? (
         <span>No result for your question!</span>
       ) : IsTable() ? (
-        <table className="mb-4" style={{ border: '1px solid black' }}>
+        <table className="mb-4 table-list--table-container">
           <thead>
             <tr>
               {columnNames().map((columName, i) => (
-                <th
-                  key={'response-table-header-row-' + i}
-                  style={{ borderBottom: '1px solid #000', borderRight: '1px solid #000' }}
-                >
+                <th key={'response-table-header-row-' + i} className="table-list--table-header">
                   {columName}
                 </th>
               ))}
@@ -45,10 +42,7 @@ const TableList = ({ data }: TableListProps) => {
             {take(dataJson, PAGE_SIZE).map((row: any, i: number) => (
               <tr key={'response-table-row-' + i}>
                 {columnNames().map((columnName: string, j) => (
-                  <td
-                    key={'response-table-cell-' + j}
-                    style={{ borderBottom: '1px solid #000', borderRight: '1px solid #000' }}
-                  >
+                  <td key={'response-table-cell-' + j} className="table-list--table-row">
                     {row[columnName]}
                   </td>
                 ))}
