@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { isMessageText, isMessagePlot, isMessageTableList, isMessageError } from '../../components/message-utils';
+import { isMessageError, isMessagePlot, isMessageTableList, isMessageText } from './message-utils';
 
 const textMessage = 'Request failed with status code 401';
 const tableMessage =
@@ -23,21 +23,21 @@ describe('message utils test', () => {
   test('is message text', () => {
     expect(isMessageText(errorMessage)).toBe(false);
   });
-  //
+
   test('is message plot', () => {
     expect(isMessagePlot(plotMessage)).toBe(true);
   });
   test('is message plot', () => {
     expect(isMessagePlot(textMessage)).toBe(false);
   });
-  //
+
   test('is message table list', () => {
     expect(isMessageTableList(tableMessage)).toBe(true);
   });
   test('is message table list', () => {
     expect(isMessageTableList(plotMessage)).toBe(false);
   });
-  //
+
   test('is message error', () => {
     expect(isMessageError(errorMessage)).toBe(true);
   });
