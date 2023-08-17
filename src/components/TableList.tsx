@@ -1,32 +1,69 @@
 import React from 'react';
 import { take } from 'lodash';
+import fetcher from 'utils/fetcher';
+import useSWR from 'swr';
+
 import './table-list.css';
+
 interface TableListProps {
-  data: string;
+  query: string;
 }
 
-const TableList = ({ data }: TableListProps) => {
-  const dataJson = JSON.parse(atob(data));
-
+const TableList = ({ query: queryBuf }: TableListProps) => {
   /** Constants */
   const PAGE_SIZE = 10;
+  /** Variable */
+  let query = '';
+  //
+  try {
+    query = atob(decodeURIComponent(queryBuf));
+    console.log(query);
+  } catch (e: any) {
+    console.log('Table error error', e);
+  }
+  const { data, isLoading } = useSWR(
+    () => (!!query ? `http://localhost:3001/api/ds?query=${encodeURIComponent(query)}` : null),
+    fetcher,
+    {}
+  );
+  //
+  if (isLoading) {
+    return <div>Loading data...</div>;
+  }
+  //
+  const { data: queryResult } = data;
 
   /** Callbacks */
   const IsTable = () => {
-    const firstRow = dataJson[0];
+    const firstRow = queryResult[0];
     return Object.keys(firstRow).length > 1;
   };
-  //
+
   const columnNames = () => {
-    const firstRow = dataJson[0];
+    const firstRow = queryResult[0];
     return Object.keys(firstRow);
+  };
+
+  const formatCellValue = (cellValue: any) => {
+    console.log(cellValue, typeof cellValue);
+    if (cellValue instanceof Date) {
+      return (cellValue as Date).toDateString();
+    }
+    if (typeof cellValue === 'string') {
+      const dateValue = Date.parse(cellValue);
+      if (!isNaN(dateValue)) {
+        const date = new Date(cellValue);
+        return date.toDateString();
+      }
+    }
+    return cellValue;
   };
 
   /** Renderer */
   return (
     <div className="table-list--main-container">
-      {dataJson.length === 0 ? (
-        <span>No result for your question!</span>
+      {queryResult.length === 0 ? (
+        <span>No result for you question!</span>
       ) : IsTable() ? (
         <table className="mb-4 table-list--table-container">
           <thead>
@@ -39,11 +76,11 @@ const TableList = ({ data }: TableListProps) => {
             </tr>
           </thead>
           <tbody>
-            {take(dataJson, PAGE_SIZE).map((row: any, i: number) => (
+            {take(queryResult, PAGE_SIZE).map((row: any, i: number) => (
               <tr key={'response-table-row-' + i}>
                 {columnNames().map((columnName: string, j) => (
                   <td key={'response-table-cell-' + j} className="table-list--table-row">
-                    {row[columnName]}
+                    {formatCellValue(row[columnName])}
                   </td>
                 ))}
               </tr>
@@ -52,7 +89,7 @@ const TableList = ({ data }: TableListProps) => {
         </table>
       ) : (
         <ul>
-          {take(dataJson, PAGE_SIZE).map((row: any, i: number) => (
+          {take(queryResult, PAGE_SIZE).map((row: any, i: number) => (
             <li key={'response-list-row-' + i}>
               {columnNames().map((columnName: string, j) => (
                 <span key={'response-list-item-' + j}>
@@ -63,9 +100,9 @@ const TableList = ({ data }: TableListProps) => {
           ))}
         </ul>
       )}
-      {dataJson.length > PAGE_SIZE && (
+      {queryResult.length > PAGE_SIZE && (
         <small>
-          There are {dataJson.length} items in the result. The rest are hidden to prevent cluttering the chat.
+          There are {queryResult.length} items in the result. The rest are hidden to prevent cluttering the chat.
         </small>
       )}
     </div>
