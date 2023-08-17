@@ -20,6 +20,10 @@ Manual Release (Replacement for 4th step):
 4. Make a checksum file for this zip: `md5sum ai-ams-fe-groupcontent-panel-***.zip > ai-ams-fe-groupcontent-panel-***.zip.md5` for example: `md5sum ai-ams-fe-groupcontent-panel-2.3.15.zip > ai-ams-fe-groupcontent-panel-2.3.15.zip.md5`
 5. Now we should upload these two files into the new release on github.
 
+## How to build locally on docker
+
+- Run `yarn run localbuild`
+
 # Grafana panel plugin template
 
 This template is a starting point for building a panel plugin for Grafana.
