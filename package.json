@@ -13,7 +13,8 @@
     "e2e": "yarn exec cypress install && yarn exec grafana-e2e run",
     "e2e:update": "yarn exec cypress install && yarn exec grafana-e2e run --update-screenshots",
     "server": "docker-compose up --build",
-    "sign": "npx --yes @grafana/sign-plugin@latest"
+    "sign": "npx --yes @grafana/sign-plugin@latest",
+    "localbuild": "rm -fR dist ai-ams-fe-groupcontent-panel && webpack -c ./.config/webpack/webpack.config.ts --env production && mv dist ai-ams-fe-groupcontent-panel && docker cp ai-ams-fe-groupcontent-panel meera-gpt-grafana:/var/lib/grafana-plugins/"
   },
   "author": "Target energy",
   "license": "Apache-2.0",
