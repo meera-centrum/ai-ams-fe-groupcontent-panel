@@ -17,10 +17,7 @@ const TableList = ({ query: queryBuf }: TableListProps) => {
   //
   try {
     query = atob(decodeURIComponent(queryBuf));
-    console.log(query);
-  } catch (e: any) {
-    console.log('Table error error', e);
-  }
+  } catch (e: any) {}
   const { data, isLoading } = useSWR(
     () => (!!query ? `http://localhost:3001/api/ds?query=${encodeURIComponent(query)}` : null),
     fetcher,
@@ -45,7 +42,6 @@ const TableList = ({ query: queryBuf }: TableListProps) => {
   };
 
   const formatCellValue = (cellValue: any) => {
-    console.log(cellValue, typeof cellValue);
     if (cellValue instanceof Date) {
       return (cellValue as Date).toDateString();
     }
