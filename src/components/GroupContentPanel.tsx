@@ -261,6 +261,7 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
       <GroupContainer
         groupLayout={selectedGroupLayout}
         messageData={messageData}
+        url={urlQueryParameter}
         handleKeepItChanged={handleKeepItOption}
         handleDeleteClick={handleDelete}
         handleTryAgainClick={handleTryAgain}

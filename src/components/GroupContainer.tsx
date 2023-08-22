@@ -10,6 +10,7 @@ import './group-container.css';
 interface GroupContainerProps {
   groupLayout: GroupLayout;
   messageData: MessageData[];
+  url: string;
   handleKeepItChanged: (traceId: string) => void;
   handleTryAgainClick: (traceId: string) => void;
   handleDeleteClick: (traceId: string) => void;
@@ -18,6 +19,7 @@ interface GroupContainerProps {
 export const GroupContainer: React.FC<GroupContainerProps> = ({
   groupLayout,
   messageData,
+  url,
   handleKeepItChanged,
   handleTryAgainClick,
   handleDeleteClick,
@@ -56,6 +58,7 @@ export const GroupContainer: React.FC<GroupContainerProps> = ({
                 <ControlGroupCard
                   contentControl={item.contentControl}
                   dateAndTime={item.createdAt}
+                  url={url}
                   isLoadingTryAgain={Boolean(item.isTryAgain)}
                   isKeepItOn={item.keepIt}
                   handleKeepItClick={() => handleKeepItChanged(item.traceId)}

@@ -10,6 +10,7 @@ import './group-card.css';
 interface ControlGroupCardProps {
   contentControl: string;
   dateAndTime: string;
+  url: string;
   isLoadingTryAgain: boolean;
   isKeepItOn: boolean;
   handleDeleteClick: () => void;
@@ -20,6 +21,7 @@ interface ControlGroupCardProps {
 export const ControlGroupCard: FC<ControlGroupCardProps> = ({
   contentControl,
   dateAndTime,
+  url,
   isLoadingTryAgain,
   isKeepItOn,
   handleKeepItClick,
@@ -43,12 +45,18 @@ export const ControlGroupCard: FC<ControlGroupCardProps> = ({
               overrides: {
                 PlotlyPlot: {
                   component: Plot,
+                  props: {
+                    url: url,
+                  },
                 },
                 Error: {
                   component: Error,
                 },
                 TableList: {
                   component: TableList,
+                  props: {
+                    url: url,
+                  },
                 },
               },
             }}

@@ -7,9 +7,10 @@ import './table-list.css';
 
 interface TableListProps {
   query: string;
+  url: string;
 }
 
-const TableList = ({ query: queryBuf }: TableListProps) => {
+const TableList = ({ query: queryBuf, url }: TableListProps) => {
   /** Constants */
   const PAGE_SIZE = 10;
   /** Variable */
@@ -19,7 +20,7 @@ const TableList = ({ query: queryBuf }: TableListProps) => {
     query = atob(decodeURIComponent(queryBuf));
   } catch (e: any) {}
   const { data, isLoading } = useSWR(
-    () => (!!query ? `http://localhost:3001/api/ds?query=${encodeURIComponent(query)}` : null),
+    () => (!!query ? `${url}/api/ds?query=${encodeURIComponent(query)}` : null),
     fetcher,
     {}
   );

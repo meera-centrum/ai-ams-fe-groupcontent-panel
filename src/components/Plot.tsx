@@ -8,9 +8,10 @@ import * as Plotly from 'plotly.js-dist';
 interface PlotProps {
   query: string;
   script: string;
+  url: string;
 }
 
-const Plot = ({ query: queryBuf, script: scriptBuf }: PlotProps) => {
+const Plot = ({ query: queryBuf, script: scriptBuf, url }: PlotProps) => {
   /** Variables */
   let query = '';
   let script = '';
@@ -29,7 +30,7 @@ const Plot = ({ query: queryBuf, script: scriptBuf }: PlotProps) => {
 
   /** SWR */
   const { data: queryResult } = useSWR(
-    () => (!!query && !!script ? `http://localhost:3001/api/ds?query=${encodeURIComponent(query)}` : null),
+    () => (!!query && !!script ? `${url}/api/ds?query=${encodeURIComponent(query)}` : null),
     fetcher,
     {}
   );
