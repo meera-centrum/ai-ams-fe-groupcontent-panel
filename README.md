@@ -8,7 +8,7 @@ Automatic Release:
 1. `yarn version --new-version ***` for example: `yarn version --new-version 2.3.15`
 2. `git push` and wait until the CI workflow has been finished.
 3. Make a draft release with this new version on GitHub.
-4. `git tag origin ***` for example: `git tag origin v2.3.15` and wait until the Release workflow has been finished.
+4. `git push origin ***` for example: `git push origin v2.3.15` and wait until the Release workflow has been finished.
 
 - If automatic Release workflow failed you had to make a release version manually.
 
