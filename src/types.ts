@@ -4,5 +4,7 @@ export interface GroupContentOptions {
   text: string;
   showSeriesCount: boolean;
   seriesCountSize: SeriesSize;
-  chatId: any;
+  chatId: string;
+  url: string;
+  cookie: String;
 }

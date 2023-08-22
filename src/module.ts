@@ -21,6 +21,18 @@ export const plugin = new PanelPlugin<GroupContentOptions>(GroupContentPanel).se
       description: 'chat id',
       defaultValue: 'chatId',
     })
+    .addTextInput({
+      path: 'url',
+      name: 'url',
+      description: 'url',
+      defaultValue: 'url',
+    })
+    .addTextInput({
+      path: 'cookie',
+      name: 'cookie',
+      description: 'cookie',
+      defaultValue: 'cookie',
+    })
     .addRadio({
       path: 'seriesCountSize',
       defaultValue: 'sm',
