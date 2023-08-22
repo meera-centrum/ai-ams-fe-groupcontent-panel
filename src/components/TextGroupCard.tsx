@@ -1,48 +1,45 @@
-import React, { FC, useCallback, useState } from 'react';
-import { ContentAdjustment } from './content-adjustment';
+import React, { FC } from 'react';
 import { GroupCardActions } from './GroupCardActions';
+
 import './group-card.css';
+import { TRY_AGAIN_LOADING_TEXT } from 'constants/global-constants';
 
 interface TextGroupCardProps {
-  data: any;
+  contentControl: string;
+  dateAndTime: string;
+  isLoadingTryAgain: boolean;
+  isKeepItOn: boolean;
+  handleDeleteClick: () => void;
+  handleTryAgainClick?: () => void;
+  handleKeepItClick: () => void;
 }
 
-export const TextGroupCard: FC<TextGroupCardProps> = ({ data }) => {
-  /* States */
-  const [isKeepItOn, setKeepItOn] = useState<boolean>(false);
-  const [contentAdjustment, setContentAdjustment] = useState<ContentAdjustment>(ContentAdjustment.Shorten);
-
-  /* Callbacks */
-  const handleKeepItChanged = useCallback(
-    (keepIt: boolean) => {
-      setKeepItOn(keepIt);
-    },
-    [setKeepItOn]
-  );
-  //
-  const handleContentAdjustmentChanged = useCallback(
-    (contentAdjustment: ContentAdjustment) => {
-      setContentAdjustment(contentAdjustment);
-    },
-    [setContentAdjustment]
-  );
-
+export const TextGroupCard: FC<TextGroupCardProps> = ({
+  contentControl,
+  dateAndTime,
+  isLoadingTryAgain,
+  isKeepItOn,
+  handleDeleteClick,
+  handleTryAgainClick,
+  handleKeepItClick,
+}) => {
   /* Renderer */
   return (
     <div className="group-card-root">
       <div className="group-card-header">
         <span>Text Group Card</span>
+        <span>{dateAndTime}</span>
       </div>
       <div className="group-card-separator" />
       <div className="group-card-content">
-        <span>{data.text}</span>
+        <span>{isLoadingTryAgain ? <span>{TRY_AGAIN_LOADING_TEXT}</span> : contentControl}</span>
       </div>
       <div className="group-card-footer">
         <GroupCardActions
-          keepIt={isKeepItOn}
-          contentAdjustment={contentAdjustment}
-          keepItChanged={handleKeepItChanged}
-          contentAdjustmentChanged={handleContentAdjustmentChanged}
+          isKeepItOn={isKeepItOn}
+          handleKeepItClick={handleKeepItClick}
+          handleDeleteClick={handleDeleteClick}
+          handleTryAgainClick={handleTryAgainClick}
         />
       </div>
     </div>

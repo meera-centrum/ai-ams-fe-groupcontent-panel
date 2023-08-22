@@ -1,34 +1,20 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { Check, DeleteOutline, Replay } from '@mui/icons-material';
 import { Button } from '@mui/material';
-//import { ContentAdjustmentButton } from './ContentAdjustmentButton';
-import { ContentAdjustment } from './content-adjustment';
 
 interface GroupCardActionsProps {
-  keepIt: boolean;
-  contentAdjustment?: ContentAdjustment;
-  keepItChanged: (keepIt: boolean) => void;
-  contentAdjustmentChanged?: (contentAdjustment: ContentAdjustment) => void;
+  isKeepItOn: boolean;
+  handleKeepItClick: () => void;
+  handleDeleteClick: () => void;
+  handleTryAgainClick?: () => void;
 }
 
 export const GroupCardActions: FC<GroupCardActionsProps> = ({
-  keepIt,
-  contentAdjustment,
-  keepItChanged,
-  contentAdjustmentChanged,
+  isKeepItOn,
+  handleKeepItClick,
+  handleDeleteClick,
+  handleTryAgainClick,
 }) => {
-  /* Callbacks */
-  const handleKeepItClick = useCallback(() => {
-    keepItChanged(!keepIt);
-  }, [keepItChanged, keepIt]);
-  //
-  // const handleSelectContentAdjustment = useCallback(
-  //   (contentAdjustment: ContentAdjustment) => {
-  //     contentAdjustmentChanged(contentAdjustment);
-  //   },
-  //   [contentAdjustmentChanged]
-  // );
-
   /* Renderer */
   return (
     <>
@@ -36,11 +22,12 @@ export const GroupCardActions: FC<GroupCardActionsProps> = ({
         size="small"
         startIcon={<Check />}
         style={{
-          backgroundColor: keepIt ? '#F2F7FF' : '',
+          // backgroundColor: keepIt ? '#F2F7FF' : '',
           textTransform: 'none',
           fontWeight: 'bold',
           whiteSpace: 'nowrap',
         }}
+        disabled={isKeepItOn}
         onClick={handleKeepItClick}
       >
         Keep It
@@ -53,6 +40,7 @@ export const GroupCardActions: FC<GroupCardActionsProps> = ({
           fontWeight: 'bold',
           whiteSpace: 'nowrap',
         }}
+        onClick={handleTryAgainClick}
       >
         Try Again
       </Button>
@@ -64,6 +52,7 @@ export const GroupCardActions: FC<GroupCardActionsProps> = ({
           fontWeight: 'bold',
           whiteSpace: 'nowrap',
         }}
+        onClick={handleDeleteClick}
       >
         Delete
       </Button>

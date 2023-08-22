@@ -2,16 +2,26 @@ import { Grid, GridSize } from '@mui/material';
 import React, { useMemo } from 'react';
 import { GroupLayout } from './group-layout';
 import { TextGroupCard } from './TextGroupCard';
-import { isMessageText } from '../utils/message-utils';
 import { ControlGroupCard } from './ControlGroupCard';
-import './group-container.css';
+import { MessageData } from 'types/global-types';
+import { MESSAGE } from 'constants/global-constants';
 
+import './group-container.css';
 interface GroupContainerProps {
   groupLayout: GroupLayout;
-  groupItems: any;
+  messageData: MessageData[];
+  handleKeepItChanged: (traceId: string) => void;
+  handleTryAgainClick: (traceId: string) => void;
+  handleDeleteClick: (traceId: string) => void;
 }
 
-export const GroupContainer: React.FC<GroupContainerProps> = ({ groupLayout, groupItems }) => {
+export const GroupContainer: React.FC<GroupContainerProps> = ({
+  groupLayout,
+  messageData,
+  handleKeepItChanged,
+  handleTryAgainClick,
+  handleDeleteClick,
+}) => {
   /* Memos */
   const gridSize: GridSize = useMemo(() => {
     switch (groupLayout) {
@@ -29,13 +39,29 @@ export const GroupContainer: React.FC<GroupContainerProps> = ({ groupLayout, gro
   return (
     <div className="group-container-root">
       <Grid container>
-        {groupItems.map((groupItem: any, index: any) => {
+        {messageData.map((item, index) => {
           return (
-            <Grid key={`groupItem-${index}`} item xs={gridSize} padding="10px">
-              {isMessageText(groupItem.text) ? (
-                <TextGroupCard data={groupItem} />
+            <Grid key={`messageData-${index}`} item xs={gridSize} padding="10px">
+              {item.type === MESSAGE ? (
+                <TextGroupCard
+                  contentControl={item.contentControl}
+                  dateAndTime={item.createdAt}
+                  isLoadingTryAgain={Boolean(item.isTryAgain)}
+                  isKeepItOn={item.keepIt}
+                  handleKeepItClick={() => handleKeepItChanged(item.traceId)}
+                  handleDeleteClick={() => handleDeleteClick(item.traceId)}
+                  handleTryAgainClick={() => handleTryAgainClick(item.traceId)}
+                />
               ) : (
-                <ControlGroupCard data={groupItem} />
+                <ControlGroupCard
+                  contentControl={item.contentControl}
+                  dateAndTime={item.createdAt}
+                  isLoadingTryAgain={Boolean(item.isTryAgain)}
+                  isKeepItOn={item.keepIt}
+                  handleKeepItClick={() => handleKeepItChanged(item.traceId)}
+                  handleDeleteClick={() => handleDeleteClick(item.traceId)}
+                  handleTryAgainClick={() => handleTryAgainClick(item.traceId)}
+                />
               )}
             </Grid>
           );

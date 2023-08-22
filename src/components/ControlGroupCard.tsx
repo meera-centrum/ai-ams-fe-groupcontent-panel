@@ -1,69 +1,68 @@
-import React, { FC, useCallback, useState } from 'react';
-import { ContentAdjustment } from './content-adjustment';
+import React, { FC } from 'react';
 import { GroupCardActions } from './GroupCardActions';
 import Markdown from 'markdown-to-jsx';
 import Plot from './Plot';
 import TableList from './TableList';
 import Error from './Error';
+import { TRY_AGAIN_LOADING_TEXT } from 'constants/global-constants';
 import './group-card.css';
 
 interface ControlGroupCardProps {
-  data: any;
+  contentControl: string;
+  dateAndTime: string;
+  isLoadingTryAgain: boolean;
+  isKeepItOn: boolean;
+  handleDeleteClick: () => void;
+  handleTryAgainClick: () => void;
+  handleKeepItClick: () => void;
 }
 
-export const ControlGroupCard: FC<ControlGroupCardProps> = ({ data }) => {
-  /* States */
-  const [isKeepItOn, setKeepItOn] = useState<boolean>(false);
-  const [contentAdjustment, setContentAdjustment] = useState<ContentAdjustment>(ContentAdjustment.Shorten);
-
-  /* Callbacks */
-  const handleKeepItChanged = useCallback(
-    (keepIt: boolean) => {
-      setKeepItOn(keepIt);
-    },
-    [setKeepItOn]
-  );
-  //
-  const handleContentAdjustmentChanged = useCallback(
-    (contentAdjustment: ContentAdjustment) => {
-      setContentAdjustment(contentAdjustment);
-    },
-    [setContentAdjustment]
-  );
-  //
-
+export const ControlGroupCard: FC<ControlGroupCardProps> = ({
+  contentControl,
+  dateAndTime,
+  isLoadingTryAgain,
+  isKeepItOn,
+  handleKeepItClick,
+  handleDeleteClick,
+  handleTryAgainClick,
+}) => {
   /* Renderer */
   return (
     <div className="group-card-root">
       <div className="group-card-header">
         <span>Control Group Card</span>
+        <span>{dateAndTime}</span>
       </div>
       <div className="group-card-separator" />
       <div className="group-card-content">
-        <Markdown
-          options={{
-            overrides: {
-              PlotlyPlot: {
-                component: Plot,
+        {isLoadingTryAgain ? (
+          TRY_AGAIN_LOADING_TEXT
+        ) : (
+          <Markdown
+            options={{
+              overrides: {
+                PlotlyPlot: {
+                  component: Plot,
+                },
+                Error: {
+                  component: Error,
+                },
+                TableList: {
+                  component: TableList,
+                },
               },
-              Error: {
-                component: Error,
-              },
-              TableList: {
-                component: TableList,
-              },
-            },
-          }}
-        >
-          {data.text}
-        </Markdown>
+            }}
+          >
+            {contentControl}
+          </Markdown>
+        )}
       </div>
       <div className="group-card-footer">
         <GroupCardActions
-          keepIt={isKeepItOn}
-          contentAdjustment={contentAdjustment}
-          keepItChanged={handleKeepItChanged}
-          contentAdjustmentChanged={handleContentAdjustmentChanged}
+          isKeepItOn={isKeepItOn}
+          handleKeepItClick={handleKeepItClick}
+          handleDeleteClick={handleDeleteClick}
+          handleTryAgainClick={handleTryAgainClick}
         />
       </div>
     </div>
