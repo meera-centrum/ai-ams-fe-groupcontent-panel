@@ -22,7 +22,8 @@
   max-height: 300px;
   min-height: 300px;
   margin: 15px;
-  font-size: 18px;
+  font-size: 14px;
+  color: #454545;
 }
 
 .group-card-footer {
@@ -31,4 +32,14 @@
   flex-wrap: wrap;
   gap: 5px;
   margin: 10px;
+}
+
+.group-card-date {
+  font-size: 13px;
+  font-weight: 500;
+  color: #2b2b2b;
+}
+
+.group-card-title {
+  color: #272727;
 }

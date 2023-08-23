@@ -27,8 +27,8 @@ export const TextGroupCard: FC<TextGroupCardProps> = ({
   return (
     <div className="group-card-root">
       <div className="group-card-header">
-        <span>Text Group Card</span>
-        <span>{dateAndTime}</span>
+        <span className="group-card-title">Text Group Card</span>
+        <span className="group-card-date">{dateAndTime}</span>
       </div>
       <div className="group-card-separator" />
       <div className="group-card-content">

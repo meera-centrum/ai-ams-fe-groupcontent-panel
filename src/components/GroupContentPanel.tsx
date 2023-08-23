@@ -11,6 +11,7 @@ import { isMessageText } from 'utils/message-utils';
 import { COMPONENT, MESSAGE } from 'constants/global-constants';
 import { MessageData } from 'types/global-types';
 import { chatListFetcher, generateMessage } from 'api/api';
+import './group-content-panel.css';
 
 interface Props extends PanelProps<GroupContentOptions> {}
 

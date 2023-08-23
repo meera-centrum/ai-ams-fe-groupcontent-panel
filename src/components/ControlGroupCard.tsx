@@ -32,8 +32,8 @@ export const ControlGroupCard: FC<ControlGroupCardProps> = ({
   return (
     <div className="group-card-root">
       <div className="group-card-header">
-        <span>Control Group Card</span>
-        <span>{dateAndTime}</span>
+        <span className="group-card-title">Control Group Card</span>
+        <span className="group-card-date">{dateAndTime}</span>
       </div>
       <div className="group-card-separator" />
       <div className="group-card-content">
