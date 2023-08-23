@@ -1,3 +1,5 @@
+/* eslint-disable curly */
+/* eslint-disable @typescript-eslint/array-type */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { PanelProps } from '@grafana/data';
@@ -36,29 +38,7 @@ const getStyles = () => {
     `,
   };
 };
-/** Functions */
-function getKeepItTraceIdFromLocalStorage() {
-  const value = localStorage.getItem('keepItTraceId');
-  if (value) {
-    return JSON.parse(value);
-  } else {
-    return [];
-  }
-}
-//
-function getNotKeepItDataFromLocalStorage() {
-  const value = localStorage.getItem('notKeepItData');
-  if (value) {
-    return JSON.parse(value);
-  } else {
-    return [];
-  }
-}
-//
-function setLocalStorageData(keepItTraceId: string[], notKeepItData: MessageData[]) {
-  localStorage.setItem('keepItTraceId', JSON.stringify(keepItTraceId));
-  localStorage.setItem('notKeepItData', JSON.stringify(notKeepItData));
-}
+
 //
 
 export const GroupContentPanel: React.FC<Props> = ({ options, data, width, height, replaceVariables }) => {
@@ -71,6 +51,40 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
   const chatIdQueryParameter = replaceVariables(`$${chatId}`);
   const cookieQueryParameter = replaceVariables(`$${cookie}`);
   const urlQueryParameter = replaceVariables(`$${url}`);
+
+  /** Functions */
+  function addTraceIdToLocalStorage(keepItTraceId: string, chatId: string) {
+    let storageRawData = localStorage.getItem('keepItData');
+    let storageData;
+    if (!storageRawData) {
+      const defaultValue = [{ chatId, traceId: [] }];
+      localStorage.setItem('keepItData', JSON.stringify(defaultValue));
+      storageData = defaultValue;
+    } else {
+      storageData = JSON.parse(storageRawData) as { chatId: string; traceId: string[] }[];
+    }
+    let isReplaced = false;
+    const newData = storageData.map((item) => {
+      if (item.chatId === chatId) {
+        item.traceId.push(keepItTraceId);
+        isReplaced = true;
+      }
+      return item;
+    });
+    if (!isReplaced) {
+      newData.push({ chatId, traceId: [keepItTraceId] });
+    }
+    localStorage.setItem('keepItData', JSON.stringify(newData));
+  }
+  //
+  function getKeepItTraceIdFromLocalStorage(chatId: string) {
+    const storageRawData = localStorage.getItem('keepItData');
+    if (!storageRawData) return [];
+    const storageData = JSON.parse(storageRawData) as { chatId: string; traceId: string[] }[];
+    const foundData = storageData.find((item) => item.chatId === chatId);
+    if (foundData) return foundData.traceId;
+    return [];
+  }
 
   /** Styles */
   const styles = useStyles2(getStyles);
@@ -95,8 +109,8 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
 
   /* States */
   const [selectedGroupLayout, setSelectedGroupLayout] = useState<GroupLayout>(DEFAULT_GROUP_LAYOUT);
-  const [keepItTraceId, setKeepItTraceId] = useState<string[]>(getKeepItTraceIdFromLocalStorage);
-  const [notKeepItData, setNotKeepItData] = useState<MessageData[]>(getNotKeepItDataFromLocalStorage);
+  const [keepItTraceId, setKeepItTraceId] = useState<string[]>(getKeepItTraceIdFromLocalStorage(chatIdQueryParameter));
+  const [notKeepItData, setNotKeepItData] = useState<MessageData[]>([]);
   const [tryAgainTraceId, setTryAgainTraceId] = useState<string[]>([]);
 
   /** SWR */
@@ -159,10 +173,6 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
-  //
-  useEffect(() => {
-    setLocalStorageData(keepItTraceId, notKeepItData);
-  }, [keepItTraceId, notKeepItData]);
 
   /* Callbacks */
   const handleSelectGroupLayout = useCallback(
@@ -173,6 +183,7 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
   );
   //
   const handleKeepItOption = (id: string) => {
+    addTraceIdToLocalStorage(id, chatIdQueryParameter);
     setKeepItTraceId((prevState) => {
       return [...prevState, id];
     });
@@ -232,11 +243,7 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
     }
     return item;
   });
-  console.log('-----------------------------------');
-  console.log('keepItContent', keepItTraceId);
-  console.log('notKeepItContent', notKeepItData);
-  console.log('final data', messageData);
-  console.log('-----------------------------------');
+
   /** Renderer */
   return (
     <div
