@@ -19,7 +19,7 @@
 
 .group-card-content {
   overflow-y: auto;
-  max-height: 300px;
+  max-height: 400px;
   min-height: 300px;
   margin: 15px;
   font-size: 14px;

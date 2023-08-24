@@ -20,7 +20,34 @@ const Plot = ({ query: queryBuf, script: scriptBuf, url }: PlotProps) => {
   const ref = useRef(null);
   const [errorMsg, setError] = useState<ReactNode>(null);
 
-  /** TODO: It must be in the right place */
+  /** Change Script */
+  script = `const data = originalData;
+
+  // begin
+  
+  const departmentNames = data.map(d => d.DepartmentName);
+  const headcounts = data.map(d => d.NumEmployees);
+  
+  const trace = {
+    x: departmentNames,
+    y: headcounts,
+    type: 'bar'
+  };
+  
+  const layout = {
+    title: 'Departments and Headcounts',
+    xaxis: {
+      title: 'Department Name'
+    },
+    yaxis: {
+      title: 'Headcount'
+    }
+  };
+  const config = {responsive: false}
+  
+  Plotly.react(node, [trace], layout,config);`;
+
+  //
   try {
     query = atob(decodeURIComponent(queryBuf));
     script = atob(decodeURIComponent(scriptBuf));
