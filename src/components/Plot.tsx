@@ -4,14 +4,16 @@ import fetcher from 'utils/fetcher';
 import * as _ from 'lodash';
 // @ts-ignore
 import * as Plotly from 'plotly.js-dist';
+import { GroupLayout } from './group-layout';
 
 interface PlotProps {
   query: string;
   script: string;
   url: string;
+  groupLayout: GroupLayout;
 }
 
-const Plot = ({ query: queryBuf, script: scriptBuf, url }: PlotProps) => {
+const Plot = ({ query: queryBuf, script: scriptBuf, url, groupLayout }: PlotProps) => {
   /** Variables */
   let query = '';
   let script = '';
@@ -19,33 +21,6 @@ const Plot = ({ query: queryBuf, script: scriptBuf, url }: PlotProps) => {
   /** State and Ref */
   const ref = useRef(null);
   const [errorMsg, setError] = useState<ReactNode>(null);
-
-  /** Change Script */
-  script = `const data = originalData;
-
-  // begin
-  
-  const departmentNames = data.map(d => d.DepartmentName);
-  const headcounts = data.map(d => d.NumEmployees);
-  
-  const trace = {
-    x: departmentNames,
-    y: headcounts,
-    type: 'bar'
-  };
-  
-  const layout = {
-    title: 'Departments and Headcounts',
-    xaxis: {
-      title: 'Department Name'
-    },
-    yaxis: {
-      title: 'Headcount'
-    }
-  };
-  const config = {responsive: false}
-  
-  Plotly.react(node, [trace], layout,config);`;
 
   //
   try {
@@ -83,11 +58,27 @@ const Plot = ({ query: queryBuf, script: scriptBuf, url }: PlotProps) => {
       }
     }
   }, [query, queryResult, script]);
+  //
+  useEffect(() => {
+    if (ref.current && queryResult) {
+      const refreshScript = 'Plotly.Plots.resize(node);';
+      const node = ref.current;
+      try {
+        let fn: Function;
+        fn = new Function('Plotly', 'node', refreshScript);
+        console.log('groupLayout', groupLayout);
+        fn(Plotly, node);
+      } catch (e: any) {
+        console.log(e);
+        setError(e.message);
+      }
+    }
+  }, [groupLayout, queryResult]);
 
   /** Renderer */
   return (
     <Fragment>
-      <div className="plotly" style={{ width: '100%', height: '350px' }} ref={ref} />
+      <div className="plotly" style={{ height: '350px' }} ref={ref} />
       {errorMsg}
     </Fragment>
   );

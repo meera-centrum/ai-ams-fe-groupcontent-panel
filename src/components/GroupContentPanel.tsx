@@ -9,7 +9,7 @@ import { useStyles2 } from '@grafana/ui';
 import { AdjustLayoutButton } from './AdjustLayoutButton';
 import { GroupContainer } from './GroupContainer';
 import { GroupLayout } from './group-layout';
-import { isMessageText } from 'utils/message-utils';
+import { isMessageError, isMessagePlot, isMessageTableList, isMessageText } from 'utils/message-utils';
 import { COMPONENT, MESSAGE } from 'constants/global-constants';
 import { MessageData } from 'types/global-types';
 import { chatListFetcher, generateMessage } from 'api/api';
@@ -118,6 +118,18 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
     () => `${urlQueryParameter}/api/messages?chatId=${chatIdQueryParameter}`,
     chatListFetcher
   );
+  /** callbacks */
+  const inputType = (input: any) => {
+    if (isMessageText(input)) {
+      return 'Text';
+    } else if (isMessageError(input)) {
+      return 'Error';
+    } else if (isMessagePlot(input)) {
+      return 'Chart';
+    } else if (isMessageTableList(input)) {
+      return 'Table';
+    } else return '';
+  };
 
   /** useMemos */
   const typeofLastMessageData = useMemo(() => {
@@ -139,7 +151,7 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
       return null;
     }
     const newItem: MessageData = {
-      title: 'have no title',
+      title: inputType(contents![contents!.length - 1]),
       contentControl: lastContent,
       createdAt: date,
       keepIt: false,
@@ -202,7 +214,7 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
     });
     return indexes.map((index) => {
       return {
-        title: 'have no title',
+        title: inputType(contents[index]),
         contentControl: contents[index],
         createdAt: convertDate(listOfCreatedAt[index]),
         keepIt: true,
@@ -237,7 +249,9 @@ export const GroupContentPanel: React.FC<Props> = ({ options, data, width, heigh
     }
   };
   //
-  const messageData = [...findKeepItContents(), ...notKeepItData].map((item) => {
+  const messageData = [...findKeepItContents(), ...notKeepItData].map((item, index) => {
+    const createAlphabets = `${item.title} ${String.fromCharCode(65 + index)}`;
+    item = { ...item, title: createAlphabets };
     if (tryAgainTraceId.includes(item.traceId)) {
       return { ...item, isTryAgain: true };
     }

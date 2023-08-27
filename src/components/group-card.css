@@ -10,6 +10,7 @@
   font-size: 15px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .group-card-separator {
@@ -19,8 +20,8 @@
 
 .group-card-content {
   overflow-y: auto;
-  max-height: 400px;
-  min-height: 300px;
+  max-height: 350px;
+  min-height: 350px;
   margin: 15px;
   font-size: 14px;
   color: #454545;
@@ -38,6 +39,7 @@
   font-size: 13px;
   font-weight: 500;
   color: #2b2b2b;
+  margin-top: 2px;
 }
 
 .group-card-title {

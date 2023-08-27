@@ -6,6 +6,7 @@ import { TRY_AGAIN_LOADING_TEXT } from 'constants/global-constants';
 
 interface TextGroupCardProps {
   contentControl: string;
+  title: string;
   dateAndTime: string;
   isLoadingTryAgain: boolean;
   isKeepItOn: boolean;
@@ -16,6 +17,7 @@ interface TextGroupCardProps {
 
 export const TextGroupCard: FC<TextGroupCardProps> = ({
   contentControl,
+  title,
   dateAndTime,
   isLoadingTryAgain,
   isKeepItOn,
@@ -27,7 +29,7 @@ export const TextGroupCard: FC<TextGroupCardProps> = ({
   return (
     <div className="group-card-root">
       <div className="group-card-header">
-        <span className="group-card-title">Text Group Card</span>
+        <span className="group-card-title">{title}</span>
         <span className="group-card-date">{dateAndTime}</span>
       </div>
       <div className="group-card-separator" />

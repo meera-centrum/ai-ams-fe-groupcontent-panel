@@ -47,6 +47,7 @@ export const GroupContainer: React.FC<GroupContainerProps> = ({
               {item.type === MESSAGE ? (
                 <TextGroupCard
                   contentControl={item.contentControl}
+                  title={item.title}
                   dateAndTime={item.createdAt}
                   isLoadingTryAgain={Boolean(item.isTryAgain)}
                   isKeepItOn={item.keepIt}
@@ -57,8 +58,10 @@ export const GroupContainer: React.FC<GroupContainerProps> = ({
               ) : (
                 <ControlGroupCard
                   contentControl={item.contentControl}
+                  title={item.title}
                   dateAndTime={item.createdAt}
                   url={url}
+                  groupLayout={groupLayout}
                   isLoadingTryAgain={Boolean(item.isTryAgain)}
                   isKeepItOn={item.keepIt}
                   handleKeepItClick={() => handleKeepItChanged(item.traceId)}

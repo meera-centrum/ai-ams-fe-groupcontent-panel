@@ -5,12 +5,16 @@ import Plot from './Plot';
 import TableList from './TableList';
 import Error from './Error';
 import { TRY_AGAIN_LOADING_TEXT } from 'constants/global-constants';
+import { GroupLayout } from './group-layout';
+
 import './group-card.css';
 
 interface ControlGroupCardProps {
   contentControl: string;
+  title: string;
   dateAndTime: string;
   url: string;
+  groupLayout: GroupLayout;
   isLoadingTryAgain: boolean;
   isKeepItOn: boolean;
   handleDeleteClick: () => void;
@@ -20,8 +24,10 @@ interface ControlGroupCardProps {
 
 export const ControlGroupCard: FC<ControlGroupCardProps> = ({
   contentControl,
+  title,
   dateAndTime,
   url,
+  groupLayout,
   isLoadingTryAgain,
   isKeepItOn,
   handleKeepItClick,
@@ -32,7 +38,7 @@ export const ControlGroupCard: FC<ControlGroupCardProps> = ({
   return (
     <div className="group-card-root">
       <div className="group-card-header">
-        <span className="group-card-title">Control Group Card</span>
+        <span className="group-card-title">{title}</span>
         <span className="group-card-date">{dateAndTime}</span>
       </div>
       <div className="group-card-separator" />
@@ -47,6 +53,7 @@ export const ControlGroupCard: FC<ControlGroupCardProps> = ({
                   component: Plot,
                   props: {
                     url: url,
+                    groupLayout: groupLayout,
                   },
                 },
                 Error: {
